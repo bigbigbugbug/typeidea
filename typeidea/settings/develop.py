@@ -1,6 +1,6 @@
 import os
 
-from typeidea.settings.base import BASE_DIR
+from typeidea.settings.base import *
 
 DEBUG = True
 
