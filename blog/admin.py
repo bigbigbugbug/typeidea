@@ -19,7 +19,7 @@ class PostInline(admin.StackedInline):
 @admin.register(Category, site=custom_site)
 class CategoryAdmin(BaseOwnerAdmin):
     inlines = [PostInline, ]
-    list_display = ('name', 'status', 'is_nav', 'created_time', 'post_count',)
+    list_display = ('id', 'name', 'status', 'is_nav', 'created_time', 'post_count',)
     fields = ('name', 'status', 'is_nav')
 
     def post_count(self, obj):
@@ -29,7 +29,7 @@ class CategoryAdmin(BaseOwnerAdmin):
 
 @admin.register(Tag, site=custom_site)
 class TagAdmin(BaseOwnerAdmin):
-    list_display = ('name', 'status', 'created_time')
+    list_display = ('id', 'name', 'status', 'created_time')
     fields = ('name', 'status')
 
 
@@ -53,7 +53,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
 class PostAdmin(BaseOwnerAdmin):
     form = PostAdminForm
     list_display = [
-        'title', 'category', 'status', 'owner', 'created_time', 'operator'
+        'id', 'title', 'category', 'status', 'owner', 'created_time', 'operator'
     ]
     list_display_links = []
 

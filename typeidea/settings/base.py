@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'typeidea',
     'blog',
     'config',
     'comment',
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'typeidea.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'themes/bootstrap/templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -112,8 +113,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+THEME = 'bootstrap'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/statis/'
+#加载静态文件
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "themes/bootstrap/statis"),
+]
