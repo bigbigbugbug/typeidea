@@ -123,3 +123,6 @@ STATIC_URL = '/statis/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "themes/bootstrap/statis"),
 ]
+
+#You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to 127.0.0.1:8000/comment/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+APPEND_SLASH = False

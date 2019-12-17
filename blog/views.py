@@ -1,5 +1,5 @@
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 from django.views.generic.list import ListView
@@ -45,9 +45,9 @@ def post_detail(request, post_id=None):
 """
 
 #class-base view
-class CommentViewMixin:
+class CommonViewMixin:
     def get_context_data(self, **kwargs):
-        context = super(CommentViewMixin, self).get_context_data(**kwargs)
+        context = super(CommonViewMixin, self).get_context_data(**kwargs)
         context.update({
             'sidebars': SideBar.get_all(),
         })
@@ -55,7 +55,7 @@ class CommentViewMixin:
         return context
 
 
-class IndexView(CommentViewMixin, ListView):
+class IndexView(CommonViewMixin, ListView):
     queryset = Post.latest_posts()
     paginate_by = 1
     context_object_name = 'post_list'
@@ -90,8 +90,31 @@ class TagView(IndexView):
         return queryset.filter(tag__id=tag_id)
 
 
-class PostDetailView(CommentViewMixin, DetailView):
+class PostDetailView(CommonViewMixin, DetailView):
     queryset = Post.latest_posts()
     template_name = 'blog/detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'post_id'
+
+
+class SearchView(IndexView):
+    def get_queryset(self):
+        queryset = super(SearchView, self).get_queryset()
+        keyword = self.request.GET.get('keyword')
+        if not keyword:
+            return queryset
+        return queryset.filter(Q(title__icontains=keyword) | Q(desc__icontains=keyword))
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchView, self).get_context_data()
+        context.update({
+            'keyword': self.request.GET.get('keyword', '')
+        })
+        return context
+
+
+class AuthorView(IndexView):
+    def get_queryset(self):
+        queryset = super(AuthorView, self).get_queryset()
+        author_id = self.kwargs.get('owner_id')
+        return queryset.filter(owner_id=author_id)
